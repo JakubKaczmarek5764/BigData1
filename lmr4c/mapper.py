@@ -12,6 +12,6 @@ for line in sys.stdin:
         country = parts[1]
         cases = int(parts[2])
         timestamp = int(parts[4])
-        print(f"{country}\t{cases},{timestamp}")  # Emituj tylko wartości
+        print(f"{country}\t{cases},{timestamp}")
     except Exception:
         continue

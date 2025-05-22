@@ -18,7 +18,6 @@ def cosine_similarity(vecA, vecB):
 
 country_vectors = defaultdict(list)
 
-# Read and process input from the mapper
 for line in sys.stdin:
     line = line.strip()
     try:
@@ -29,25 +28,21 @@ for line in sys.stdin:
     except ValueError:
         continue
 
-# Flatten all data into a global list and sort by timestamp
 sorted_data = []
 for country, values in country_vectors.items():
     for timestamp, cases in values:
         sorted_data.append((timestamp, country, cases))
 sorted_data.sort()  # Sort by timestamp globally
 
-# Rebuild sorted country vectors
 sorted_country_vectors = defaultdict(list)
 for _, country, cases in sorted_data:
     sorted_country_vectors[country].append(cases)
 
-# Ensure there are at least two countries for similarity calculation
 countries = list(sorted_country_vectors.keys())
 if len(countries) < 2:
     print("Not enough countries to compute cosine similarity.")
     sys.exit(0)
 
-# Compute cosine similarity for each pair of countries using `combinations`
 results = []
 for country_a, country_b in combinations(countries, 2):
     similarity = cosine_similarity(
@@ -56,9 +51,7 @@ for country_a, country_b in combinations(countries, 2):
     )
     results.append((country_a, country_b, similarity))
 
-# Sort results alphabetically by country names
 results.sort(key=lambda x: (x[0], x[1]))
 
-# Print sorted results
 for country_a, country_b, similarity in results:
     print(f"{country_a} - {country_b}\t{similarity:.4f}")
