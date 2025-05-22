@@ -4,8 +4,7 @@
 import sys
 from collections import defaultdict
 from math import sqrt
-
-country_vectors = defaultdict(list)
+from itertools import combinations
 
 
 def cosine_similarity(vecA, vecB):
@@ -17,16 +16,49 @@ def cosine_similarity(vecA, vecB):
     return dot_product / (magnitude_a * magnitude_b)
 
 
+country_vectors = defaultdict(list)
+
+# Read and process input from the mapper
 for line in sys.stdin:
     line = line.strip()
-    country, cases = line.split('\t')
-    cases = int(cases)
-    country_vectors[country].append(cases)
+    try:
+        country, cases, timestamp = line.split('\t')
+        cases = int(cases)
+        timestamp = int(timestamp)
+        country_vectors[country].append((timestamp, cases))
+    except ValueError:
+        continue
 
-countries = list(country_vectors.keys())
-for i in range(len(countries)):
-    country_a = countries[i]
-    for j in range(i + 1, len(countries)):
-        country_b = countries[j]
-        similarity = cosine_similarity(country_vectors[country_a], country_vectors[country_b])
-        print(f"{country_a} - {country_b}\t{similarity:.4f}")
+# Flatten all data into a global list and sort by timestamp
+sorted_data = []
+for country, values in country_vectors.items():
+    for timestamp, cases in values:
+        sorted_data.append((timestamp, country, cases))
+sorted_data.sort()  # Sort by timestamp globally
+
+# Rebuild sorted country vectors
+sorted_country_vectors = defaultdict(list)
+for _, country, cases in sorted_data:
+    sorted_country_vectors[country].append(cases)
+
+# Ensure there are at least two countries for similarity calculation
+countries = list(sorted_country_vectors.keys())
+if len(countries) < 2:
+    print("Not enough countries to compute cosine similarity.")
+    sys.exit(0)
+
+# Compute cosine similarity for each pair of countries using `combinations`
+results = []
+for country_a, country_b in combinations(countries, 2):
+    similarity = cosine_similarity(
+        sorted_country_vectors[country_a],
+        sorted_country_vectors[country_b],
+    )
+    results.append((country_a, country_b, similarity))
+
+# Sort results alphabetically by country names
+results.sort(key=lambda x: (x[0], x[1]))
+
+# Print sorted results
+for country_a, country_b, similarity in results:
+    print(f"{country_a} - {country_b}\t{similarity:.4f}")

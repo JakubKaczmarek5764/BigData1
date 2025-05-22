@@ -4,13 +4,19 @@
 import sys
 from collections import defaultdict
 
-aggregated_data = defaultdict(list)
+# Pamiętaj dane jako wartości lokalne
+combined_data = defaultdict(list)
 
+# Proces lokalny dla surowych wejściowych par (kraj, squashed_lists)
 for line in sys.stdin:
     line = line.strip()
-    country, cases = line.split('\t')
-    cases = int(cases)
-    aggregated_data[country].append(cases)
+    try:
+        country, value = line.split('\t')
+        cases, timestamp = map(int, value.split(','))
+        combined_data[country].append((cases, timestamp))
+    except ValueError:
+        continue
 
-for country, cases_list in aggregated_data.items():
-    print(f"{country}\t{','.join(map(str, cases_list))}")
+# Emitowanie kombinowanych lokalnych list jako wartości dla reduktora
+for country, values in combined_data.items():
+    print(f"{country}\t{values}")

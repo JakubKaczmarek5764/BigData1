@@ -7,12 +7,11 @@ for line in sys.stdin:
     try:
         line = line.strip()
         parts = line.split(',')
-
-        if len(parts) < 3 or not parts[2].isdigit():
+        if len(parts) < 5 or not parts[2].isdigit() or not parts[4].isdigit():
             continue
-
         country = parts[1]
         cases = int(parts[2])
-        print(f"{country}\t{cases}")
+        timestamp = int(parts[4])
+        print(f"{country}\t{cases},{timestamp}")  # Emituj tylko wartości
     except Exception:
         continue
