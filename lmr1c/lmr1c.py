@@ -4,7 +4,7 @@ from collections import defaultdict
 
 with open("dane.csv", newline='', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile)
-    next(reader)  # pomiń nagłówek
+    next(reader)
 
     filtered_rows = filter(
         lambda row: len(row) >= 3 and row[1].strip() and row[2].isdigit(),
