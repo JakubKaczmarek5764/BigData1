@@ -22,10 +22,8 @@ for line in sys.stdin:
     except ValueError:
         continue
 
-    # Jeśli zmieniamy kraj, emituj dane częściowo zsumowane
     if current_country and current_country != country:
         print(f"{current_country}\t{country_confirmed}\t{country_deceased}")
-        # Resetowanie danych dla nowego kraju
         country_confirmed = 0
         country_deceased = 0
 
@@ -33,6 +31,5 @@ for line in sys.stdin:
     country_confirmed += confirmed
     country_deceased += deceased
 
-# Emituj dane dla ostatniego kraju
 if current_country:
     print(f"{current_country}\t{country_confirmed}\t{country_deceased}")

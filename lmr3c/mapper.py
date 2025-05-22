@@ -7,7 +7,6 @@ for line in sys.stdin:
     line = line.strip()
     parts = line.split(',')
 
-    # Pomijamy pierwszy wiersz (nagłówki pliku CSV)
     if parts[0] == "":
         continue
 
@@ -15,8 +14,6 @@ for line in sys.stdin:
         country = parts[1].strip()
         confirmed = int(parts[2].strip())
         deceased = int(parts[3].strip())
-        # Mapper emituje odpowiednie dane do dalszej agregacji
         print(f"{country}\t{confirmed}\t{deceased}")
     except ValueError:
-        # Jeśli wystąpi błąd w danych wejściowych, pomiń wiersz
         continue

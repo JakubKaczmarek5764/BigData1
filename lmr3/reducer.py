@@ -22,12 +22,10 @@ for line in sys.stdin:
     except ValueError:
         continue
 
-    # Jeśli zmieniamy kraj, emituj wynik dla poprzedniego kraju
     if current_country and current_country != country:
-        if total_confirmed > 0:  # Unikamy dzielenia przez zero
+        if total_confirmed > 0:
             death_percentage = (total_deceased / total_confirmed) * 100
             print(f"{current_country}\t{death_percentage:.2f}%")
-        # Resetuj dane dla nowego kraju
         total_confirmed = 0
         total_deceased = 0
 
@@ -35,7 +33,6 @@ for line in sys.stdin:
     total_confirmed += confirmed
     total_deceased += deceased
 
-# Emitowanie wyniku dla ostatniego kraju
 if current_country:
     if total_confirmed > 0 and total_deceased > 0:
         death_percentage = (total_deceased / total_confirmed) * 100

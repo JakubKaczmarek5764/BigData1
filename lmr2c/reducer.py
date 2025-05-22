@@ -24,7 +24,6 @@ for line in sys.stdin:
     except ValueError:
         continue
 
-# Obliczanie procentu zaszczepionych
 for country, vaccinated_list in vaccinated_data.items():
     max_vaccinated = max(vaccinated_list, default=0)
     population = population_data.get(country, 0)
