@@ -32,7 +32,7 @@ sorted_data = []
 for country, values in country_vectors.items():
     for timestamp, cases in values:
         sorted_data.append((timestamp, country, cases))
-sorted_data.sort()  # Sort by timestamp globally
+sorted_data.sort()
 
 sorted_country_vectors = defaultdict(list)
 for _, country, cases in sorted_data:
